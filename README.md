@@ -1,5 +1,5 @@
 # crawl-snowflakestatus
-Crawl Snowflake status page and send alerts.
+Crawl Snowflake status page and send alerts. https://status.snowflake.com/
 
 > I am using Scrapy to crawl Snowflake status page and sending alerts using AWS Lambda and SES.
 
