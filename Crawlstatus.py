@@ -1,15 +1,3 @@
-# crawl-snowflakestatus
-Crawl Snowflake status page and send alerts.
-
-> I am using Scrapy to crawl Snowflake status page and sending alerts using AWS Lambda and SES.
-
-1) Create a Python Lambda layer with requests and scrapy python modules.
-
-
-2) Create a Python Lambda Function.(Requires a Role with SES send_mail access.)
-
-``` python
-
 import json
 from scrapy import Selector
 import datetime as dt
@@ -99,9 +87,3 @@ def lambda_handler(event, context):
         'body': json.dumps('Hello from Lambda!')
     }
 
-
-
-```
-
-
-3) Schedule this Lambda using AWS Cloudwatch Event rules(Every 5 mins). This will send an alert if there is any change in the status.
