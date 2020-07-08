@@ -5,8 +5,45 @@ Crawl Snowflake status page and send alerts. https://status.snowflake.com/
 
 1) Create a Python Lambda layer with requests and scrapy python modules.
 
+- Create Zip file
 
-2) Create a Python Lambda Function.(Requires a Role with SES send_mail access.)
+``` bash
+
+#Create a folder
+
+mkdir -p snowcrawler/python
+
+#Change Dir
+cd snowcrawler/python
+
+#Install Module, I am using Python3.7.
+
+pip3.7 install requests -t .
+
+pip3.7 install scrapy -t .
+
+#Change Dir
+cd ..
+
+#Zip it
+
+zip -r9 ../pysnowcrawler.zip .
+
+
+
+```
+
+- Create a Lambda layer.
+
+    - Log into AWS account.
+    - Click on AWS Lambda service.
+    - Under layers tab, Click on Create Layer.
+    - Enter Name, Description, Select "Upload a .zip file" and click on Upload and select the zip file pysnowcrawler.zip
+    - Select Python version I am using Python3.7.
+    - Click on Create, this will create a new layer.
+
+
+2) Create a Python Lambda Function (Requires a Role with SES send_mail access) and attach the layer.
 
 ``` python
 
