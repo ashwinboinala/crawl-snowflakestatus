@@ -77,19 +77,19 @@ def lambda_handler(event, context):
             return
         scrapy_info = Selector(text=statustext.text) 
         alldivs=scrapy_info.xpath('//div[contains(@class,"components-section")]//div[contains(@class,"component-container border-color is-group")]/div').getall()
-        swflkstatus = 'NaN'
+        snowflakestatus = None
         for div in alldivs:
             if SNOWFLAKE_REGION in div:
-                swflkstatus = Selector(text=div).xpath('//span[contains(@class,"tool icon-indicator fa fa-check")]/@title').get()
-                print('snowflake status is '+swflkstatus)
-        if swflkstatus == 'NaN':
+                snowflakestatus = Selector(text=div).xpath('//span[contains(@class,"tool icon-indicator fa fa-check")]/@title').get()
+                print('snowflake status is '+snowflakestatus)
+        if snowflakestatus == None:
             print('Unable to check status')
             errormessage = 'Unable to crawl snowflake service status'
             sendmail(errormessage,'Unable to crawl snowflake service status',ADMIN_EMAIL)
             return
-        elif swflkstatus != 'Operational':
-            print('Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(swflkstatus))
-            errormessage = 'Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(swflkstatus)
+        elif snowflakestatus != 'Operational':
+            print('Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(snowflakestatus))
+            errormessage = 'Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(snowflakestatus)
             sendmail(errormessage,'Snowflake service is down.',TO_ADDRESS)
     except Exception as e:
         sendmail(e,'Snowflake service crawler error',ADMIN_EMAIL)
