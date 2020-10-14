@@ -68,16 +68,16 @@ def lambda_handler(event, context):
         snowflakestatus = None
         for div in alldivs:
             if SNOWFLAKE_REGION in div:
-                snowflakestatus = Selector(text=div).xpath('//span[contains(@class,"tool icon-indicator fa fa-check")]/@title').get()
-                print('snowflake status is '+snowflakestatus)
+                snowflakestatus =  (Selector(text=div).xpath('//span[contains(@class,"component-status tool")]/text()').get())
+                print('snowflake status is '+' '.join(snowflakestatus.split()))
         if snowflakestatus == None:
             print('Unable to check status')
             errormessage = 'Unable to crawl snowflake service status'
             sendmail(errormessage,'Unable to crawl snowflake service status',ADMIN_EMAIL)
             return
-        elif snowflakestatus != 'Operational':
-            print('Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(snowflakestatus))
-            errormessage = 'Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(snowflakestatus)
+        elif ' '.join(snowflakestatus.split()) != 'Operational':
+            print('Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(' '.join(snowflakestatus.split())))
+            errormessage = 'Snowflake service in '+SNOWFLAKE_REGION+' is down, status is '+str(' '.join(snowflakestatus.split()))
             sendmail(errormessage,'Snowflake service is down.',TO_ADDRESS)
     except Exception as e:
         sendmail(e,'Snowflake service crawler error',ADMIN_EMAIL)
